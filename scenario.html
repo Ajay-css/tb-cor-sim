@@ -979,7 +979,7 @@ Submitted
 
                             const result =
 
-                                EvaluationEngine
+                                EvaluationEngineV2
                                     .evaluate(
 
                                         team.response,
@@ -1015,16 +1015,31 @@ Submitted
                                             scoreSnap.val();
 
                                         const oldScore =
+
                                             existing &&
-                                                !isNaN(existing.totalScore)
-                                                ? Number(existing.totalScore) : 0;
+                                                !isNaN(
+                                                    existing.totalScore
+                                                )
+
+                                                ?
+
+                                                Number(
+                                                    existing.totalScore
+                                                )
+
+                                                :
+
+                                                0;
 
                                         return db.ref(
+
                                             "rooms/" +
                                             roomCode +
                                             "/scores/" +
                                             team.teamName
+
                                         )
+
                                             .set({
 
                                                 teamName:
@@ -1041,10 +1056,16 @@ Submitted
                                                     result.rating,
 
                                                 feedback:
-                                                    result.feedback,
+                                                    result.improvements,
 
                                                 strengths:
                                                     result.strengths,
+
+                                                breakdown:
+                                                    result.breakdown,
+
+                                                scenarioType:
+                                                    result.scenarioType,
 
                                                 bestResponse:
                                                     team.response
@@ -1059,21 +1080,24 @@ Submitted
 
                         });
 
-
-
                     Promise.all(
                         savePromises
                     )
+
                         .then(() => {
 
                             playSound(
                                 "correct-answer.wav"
                             );
 
-                            window.location.href =
+                            setTimeout(() => {
 
-                                "leaderboard.html?room=" +
-                                roomCode;
+                                window.location.href =
+
+                                    "leaderboard.html?room=" +
+                                    roomCode;
+
+                            }, 500);
 
                         });
 
