@@ -68,7 +68,7 @@
 
                     <span id="timerDisplay">
 
-                        90
+                        120
 
                     </span>
 
@@ -110,7 +110,7 @@
 
                         <span id="hostTimer">
 
-                            90
+                            120
 
                         </span>
 
@@ -687,7 +687,7 @@
                 timerInterval
             );
 
-            let timeLeft = 90;
+            let timeLeft = 120;
 
             db.ref(
                 "rooms/" +
@@ -904,8 +904,8 @@
 
                         `
 
-Submitted
-`;
+ Submitted
+ `;
 
                     lucide.createIcons();
 
@@ -998,212 +998,4 @@ Submitted
 
                             );
 
-                            const savePromise =
-
-                                db.ref(
-                                    "rooms/" +
-                                    roomCode +
-                                    "/scores/" +
-                                    team.teamName
-                                )
-
-                                    .once("value")
-
-                                    .then(scoreSnap => {
-
-                                        const existing =
-                                            scoreSnap.val();
-
-                                        const oldScore =
-
-                                            existing &&
-                                                !isNaN(
-                                                    existing.totalScore
-                                                )
-
-                                                ?
-
-                                                Number(
-                                                    existing.totalScore
-                                                )
-
-                                                :
-
-                                                0;
-
-                                        return db.ref(
-
-                                            "rooms/" +
-                                            roomCode +
-                                            "/scores/" +
-                                            team.teamName
-
-                                        )
-
-                                            .set({
-
-                                                teamName:
-                                                    team.teamName,
-
-                                                lastRound:
-                                                    result.score,
-
-                                                totalScore:
-                                                    Number(oldScore) +
-                                                    Number(result.score),
-
-                                                rating:
-                                                    result.rating,
-
-                                                feedback:
-                                                    result.improvements,
-
-                                                strengths:
-                                                    result.strengths,
-
-                                                breakdown:
-                                                    result.breakdown,
-
-                                                scenarioType:
-                                                    result.scenarioType,
-
-                                                bestResponse:
-                                                    team.response
-
-                                            });
-
-                                    });
-
-                            savePromises.push(
-                                savePromise
-                            );
-
-                        });
-
-                    Promise.all(
-                        savePromises
-                    )
-
-                        .then(() => {
-
-                            playSound(
-                                "correct-answer.wav"
-                            );
-
-                            setTimeout(() => {
-
-                                window.location.href =
-
-                                    "leaderboard.html?room=" +
-                                    roomCode;
-
-                            }, 500);
-
-                        });
-
-                })
-
-                .catch(error => {
-
-                    console.error(error);
-
-                    alert(
-                        "Evaluation Failed"
-                    );
-
-                });
-
-        }
-
-        // END MATCH
-
-        function endMatch() {
-
-            const confirmEnd =
-                confirm(
-                    "End this match?"
-                );
-
-            if (!confirmEnd)
-                return;
-
-
-            db.ref(
-                "rooms/" +
-                roomCode
-            )
-                .update({
-
-                    status:
-                        "completed",
-
-                    gameEnded:
-                        true
-
-                })
-                .then(() => {
-
-                    playSound(
-                        "achievement-bell.wav"
-                    );
-
-                    setTimeout(() => {
-
-                        window.location.href =
-                            "final-results.html?room=" +
-                            roomCode;
-
-                    }, 700);
-
-                })
-        }
-
-
-
-        // GAME END LISTENER
-
-        db.ref(
-            "rooms/" +
-            roomCode +
-            "/gameEnded"
-        )
-            .on(
-                "value",
-                (snapshot) => {
-
-                    const ended =
-                        snapshot.val();
-
-                    if (
-                        ended &&
-                        role !== "host"
-                    ) {
-
-                        alert(
-                            "Match Ended"
-                        );
-
-                        window.location.href =
-                            "index.html";
-
-                    }
-
-                });
-
-
-
-        // INITIAL TIMER START
-
-        if (role === "host") {
-
-            startTimer();
-
-        }
-
-        lucide.createIcons();
-
-    </script>
-
-</body>
-
-</html>
+[...
