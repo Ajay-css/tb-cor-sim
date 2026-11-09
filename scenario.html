@@ -519,20 +519,43 @@
                         .then(snapshot => {
 
                             const room =
-                                snapshot.val();
+    snapshot.val();
 
-                            const scenarioIndex =
-                                room.currentScenarioIndex || 0;
+if (!room) {
+    return;
+}
 
-                            const currentScenario =
-                                SCENARIOS[
-                                room.currentScenarioIndex
-                                ];
+const scenarioIndex =
+    Number(
+        room.currentScenarioIndex || 0
+    );
 
-                            const character =
-                                getCharacter(
-                                    currentScenario.category
-                                );
+const currentScenario =
+    SCENARIOS[
+        scenarioIndex
+    ] ||
+    SCENARIOS[0];
+
+if (!currentScenario) {
+    return;
+}
+
+const character =
+    getCharacter(
+        currentScenario.category
+    );
+
+const characterImage =
+    document.getElementById(
+        "scenarioCharacter"
+    );
+
+if (characterImage) {
+
+    characterImage.src =
+        character.image;
+
+}
 
                             document
                                 .getElementById(
@@ -823,6 +846,35 @@
                         submitBtn.disabled =
                             true;
 
+                        submitBtn.classList.add(
+    "submitted-btn"
+);
+
+document
+.getElementById(
+    "submitBtnText"
+)
+.innerHTML =
+
+`
+<span class="submitted-content">
+
+    <i
+    data-lucide="badge-check">
+
+    </i>
+
+    <span>
+
+        Auto Submitted
+
+    </span>
+
+</span>
+`;
+
+lucide.createIcons();
+
                     }
 
                 });
@@ -896,16 +948,29 @@
                             "submitted-btn"
                         );
 
-                    document
-                        .getElementById(
-                            "submitBtnText"
-                        )
-                        .innerHTML =
+                    document.getElementById(
+    "submitBtnText"
+)
+.innerHTML =
 
-                        `
+`
+<span class="submitted-content">
 
- Submitted
- `;
+    <i
+    data-lucide="badge-check">
+
+    </i>
+
+    <span>
+
+        Response Submitted
+
+    </span>
+
+</span>
+`;
+
+lucide.createIcons();
 
                     lucide.createIcons();
 
