@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>TechBee Corporate Simulator</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Outfit:wght@100..900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            font-family: 'Outfit', sans-serif;
+            color: #13233E;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: auto;
+            padding: 40px;
+        }
+
+        /* =========================
+   HERO SECTION
+========================= */
+
+        .hero-section {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 80px;
+
+            min-height: 75vh;
+
+            margin-bottom: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 12px 20px;
+
+            border-radius: 999px;
+
+            background:
+                rgba(79, 127, 255, .08);
+
+            border:
+                1px solid rgba(79, 127, 255, .15);
+
+            color: black;
+
+            font-weight: 600;
+
+            margin-bottom: 24px;
+        }
+
+        .hero-content h1 {
+
+            font-size: 72px;
+
+            line-height: 1;
+
+            color: #13233E;
+
+            margin-bottom: 24px;
+
+            font-weight: 500;
+        }
+
+        .hero-content p {
+
+            font-size: 20px;
+
+            line-height: 1.8;
+
+            color: #64748B;
+
+            max-width: 650px;
+
+            margin-bottom: 35px;
+        }
+
+        .hero-image {
+
+            flex: 1;
+
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .hero-image img {
+
+            max-width: 520px;
+
+            width: 100%;
+        }
+
+        /* =========================
+   ACTION BUTTONS
+========================= */
+
+        .top-actions {
+
+            display: flex;
+
+            gap: 18px;
+        }
+
+        .primary-btn {
+
+            background:
+                rgba(79, 127, 255, .12);
+
+            color: #4F7FFF;
+
+            backdrop-filter: blur(18px);
+
+            border:
+                1px solid rgba(79, 127, 255, .25);
+
+            border-radius: 18px;
+
+            padding: 16px 30px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: .25s ease;
+
+            box-shadow:
+                0 10px 30px rgba(79, 127, 255, .10);
+        }
+
+        .primary-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            background: #4F7FFF;
+
+            color: white;
+        }
+
+        .secondary-btn {
+
+            background: white;
+
+            color: #13233E;
+
+            border:
+                1px solid rgba(0, 0, 0, .08);
+
+            border-radius: 18px;
+
+            padding: 16px 30px;
+
+            font-size: 16px;
+
+            font-weight: 600;
+
+            cursor: pointer;
+
+            transition: .25s ease;
+
+            box-shadow:
+                0 10px 25px rgba(0, 0, 0, .05);
+        }
+
+        .secondary-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+            background: #f8faff;
+        }
+
+        /* =========================
+   CARDS
+========================= */
+
+        .card {
+
+            background:
+                rgba(255,
+                    255,
+                    255,
+                    .85);
+
+            backdrop-filter:
+                blur(20px);
+
+            border:
+                1px solid rgba(0,
+                    0,
+                    0,
+                    .05);
+
+            border-radius: 28px;
+
+            padding: 32px;
+
+            box-shadow:
+                0 20px 50px rgba(0,
+                    0,
+                    0,
+                    .05);
+
+            margin-bottom: 32px;
+        }
+
+        .card h2 {
+
+            font-size: 28px;
+
+            color: #13233E;
+        }
+
+        /* =========================
+   ROOM CARDS
+========================= */
+
+        .room-card {
+
+            background: #F8FAFF;
+
+            border:
+                1px solid rgba(79,
+                    127,
+                    255,
+                    .08);
+
+            border-radius: 20px;
+
+            padding: 20px;
+
+            margin-bottom: 16px;
+
+            transition: .25s ease;
+        }
+
+        .room-card:hover {
+
+            transform:
+                translateY(-2px);
+
+            box-shadow:
+                0 10px 30px rgba(0,
+                    0,
+                    0,
+                    .05);
+        }
+
+        .room-card h3 {
+
+            font-size: 22px;
+
+            color: #13233E;
+        }
+
+        .room-actions {
+
+            display: flex;
+
+            gap: 10px;
+
+            flex-wrap: wrap;
+
+            margin-top: 18px;
+        }
+
+        /* =========================
+   STATUS
+========================= */
+
+        .status-ongoing {
+
+            color: #22C55E;
+
+            font-weight: 600;
+        }
+
+        .status-completed {
+
+            color: #94A3B8;
+
+            font-weight: 600;
+        }
+
+        /* =========================
+   ROOM ACTION BUTTONS
+========================= */
+
+        .open-btn {
+
+            background: #4F7FFF;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+        }
+
+        .complete-btn {
+
+            background: #F59E0B;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+        }
+
+        .delete-btn {
+
+            background: #EF4444;
+
+            color: white;
+
+            border: none;
+
+            padding: 10px 16px;
+
+            border-radius: 12px;
+
+            cursor: pointer;
+        }
+
+        .feature-pills {
+
+            display: flex;
+
+            gap: 12px;
+
+            flex-wrap: wrap;
+
+            margin-top: 30px;
+        }
+
+        .feature-pill {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 12px 18px;
+
+            background: #f8faff;
+
+            border: 1px solid rgba(79,
+                    127,
+                    255,
+                    .08);
+
+            border-radius: 16px;
+
+            color: #334155;
+
+            font-weight: 500;
+        }
+
+        .feature-pill i {
+
+            color: #4f7fff;
+        }
+
+        .badge {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+        }
+
+        .badge-icon {
+
+            color: #4f7fff;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .primary-btn i,
+        .secondary-btn i {
+            font-size: 18px;
+        }
+
+        .primary-btn {
+
+            font-family: "Outfit";
+
+            background:
+                linear-gradient(135deg,
+                    #4F7FFF,
+                    #8B7BFF);
+
+            color: white;
+
+            border: none;
+
+            padding: 18px 34px;
+
+            border-radius: 18px;
+
+            font-weight: 700;
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 15px 35px rgba(79,
+                    127,
+                    255,
+                    .35);
+
+            transition: .25s ease;
+        }
+
+        .primary-btn:hover {
+
+            transform:
+                translateY(-3px);
+
+            box-shadow:
+                0 25px 45px rgba(79,
+                    127,
+                    255,
+                    .45);
+
+        }
+
+        .secondary-btn {
+
+            font-family: "Outfit";
+
+            background: white;
+
+            border:
+                1px solid rgba(0,
+                    0,
+                    0,
+                    .08);
+
+            color: #13233E;
+
+            padding: 18px 34px;
+
+            border-radius: 18px;
+
+            font-weight: 700;
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(0,
+                    0,
+                    0,
+                    .05);
+
+            transition: .25s ease;
+        }
+
+        .secondary-btn:hover {
+
+            transform:
+                translateY(-2px);
+
+        }
+
+        .hero-content h1 {
+
+            font-size: 84px;
+
+            line-height: 1;
+
+            letter-spacing: -4px;
+        }
+
+        .typing-heading {
+
+            font-size: 88px;
+
+            font-weight: 800;
+
+            line-height: 1.5;
+
+            letter-spacing: -4px;
+
+            color: #13233E;
+        }
+
+        .gradient-win {
+
+            background:
+                linear-gradient(90deg,
+                    #4F7FFF,
+                    #8B7BFF);
+
+            -webkit-background-clip: text;
+
+            -webkit-text-fill-color: transparent;
+
+            background-clip: text;
+        }
+
+        .cursor {
+
+            font-weight: 100;
+
+            display: inline-block;
+
+            margin-left: 4px;
+
+            animation:
+                blink 0.8s infinite;
+
+            color: black;
+        }
+
+        @keyframes blink {
+
+            50% {
+
+                opacity: 0;
+            }
+
+        }
+
+        /* =========================
+   RESPONSIVE
+========================= */
+
+        @media (max-width:1000px) {
+
+            .hero-section {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+            .hero-content h1 {
+
+                font-size: 56px;
+            }
+
+            .top-actions {
+
+                justify-content: center;
+            }
+
+        }
+
+        .typing-heading {
+            font-family: "Cinzel", serif;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <section class="hero-section">
+
+            <div class="hero-content">
+
+                <div class="badge">
+
+                    <span>
+                        🐝 TechBee Corporate Simulator
+                    </span>
+
+                </div>
+
+                <h1 class="typing-heading">
+
+                    <span id="typeLine1"></span>
+
+                    <br>
+
+                    <span class="gradient-win">
+
+                        <span id="typeLine2"></span>
+
+                    </span>
+
+                    <span class="cursor">|</span>
+
+                </h1>
+
+                <p>
+
+                    Solve workplace challenges, make professional decisions,
+                    and compete with teams through realistic corporate scenarios.
+
+                </p>
+
+                <div class="top-actions">
+
+                    <button class="primary-btn" onclick="createRoom()">
+
+                        Create Room
+
+                    </button>
+
+                    <button class="secondary-btn" onclick="goToJoin()">
+
+                        Join Room
+
+                    </button>
+
+                </div>
+
+                <div class="feature-pills">
+
+                    <div class="feature-pill">
+
+                        250 Workplace Scenarios
+
+                    </div>
+
+                    <div class="feature-pill">
+
+                        Team Discussions
+
+                    </div>
+
+                    <div class="feature-pill">
+
+                        Live Leaderboards
+
+                    </div>
+
+                    <div class="feature-pill">
+
+                        Professional Simulation
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-image">
+
+                <img src="assets/images/hero-img1.png" alt="TechBee Hero">
+
+            </div>
+
+        </section>
+
+
+
+        <section class="card">
+
+            <h2>
+
+                Active Rooms
+
+            </h2>
+
+            <br>
+
+            <div id="roomList">
+
+                Loading Rooms...
+
+            </div>
+
+        </section>
+
+    </div>
+
+
+
+    <script>
+
+        const firstLine =
+            "Think. Type.";
+
+        const secondLine =
+            "Win.";
+
+        const line1 =
+            document.getElementById(
+                "typeLine1"
+            );
+
+        const line2 =
+            document.getElementById(
+                "typeLine2"
+            );
+
+        let i = 0;
+        let j = 0;
+
+        function typeFirstLine() {
+
+            if (
+                i <
+                firstLine.length
+            ) {
+
+                line1.textContent +=
+                    firstLine.charAt(i);
+
+                i++;
+
+                setTimeout(
+                    typeFirstLine,
+                    100
+                );
+
+            }
+            else {
+
+                setTimeout(
+                    typeSecondLine,
+                    300
+                );
+
+            }
+
+        }
+
+        function typeSecondLine() {
+
+            if (
+                j <
+                secondLine.length
+            ) {
+
+                line2.textContent +=
+                    secondLine.charAt(j);
+
+                j++;
+
+                setTimeout(
+                    typeSecondLine,
+                    120
+                );
+
+            }
+
+        }
+
+        typeFirstLine();
+
+        function goToJoin() {
+
+            playSound(
+                "ui-click.wav"
+            );
+
+            setTimeout(() => {
+
+                window.location.href =
+                    "join.html";
+
+            }, 400);
+
+        }
+
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/scenarios.js"></script>
+
+    <script>
+
+        function playSound(file) {
+
+            const audio = new Audio(
+                "assets/audio/" + file
+            );
+
+            audio.preload = "auto";
+
+            audio.volume = 0.5;
+
+            audio.currentTime = 0;
+
+            audio.play()
+                .catch(error => {
+
+                    console.log(
+                        "Audio blocked:",
+                        error
+                    );
+
+                });
+
+        }
+
+        function createRoom() {
+
+            const roomCode =
+                "TB" +
+                Math.floor(
+                    1000 +
+                    Math.random() * 9000
+                );
+
+            const randomIndex =
+                Math.floor(
+                    Math.random() *
+                    SCENARIOS.length
+                );
+
+            const firstScenario =
+                SCENARIOS[randomIndex] || SCENARIOS[0];
+
+            db.ref(
+                "rooms/" +
+                roomCode
+            )
+                .set({
+
+                    roomCode:
+                        roomCode,
+
+                    status:
+                        "ongoing",
+
+                    gameStarted:
+                        false,
+
+                    currentScenarioIndex:
+                        randomIndex,
+
+                    currentQuestion:
+                        firstScenario.question,
+
+                    timer:
+                        90,
+
+                    createdAt:
+                        Date.now()
+
+                })
+
+                .then(() => {
+
+                    playSound(
+                        "ui-click.wav"
+                    );
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "lobby.html?room=" +
+                            roomCode +
+                            "&role=host";
+
+                    }, 700);
+
+                });
+
+        }
+
+        function openRoom(roomCode) {
+
+            window.location.href =
+
+                "lobby.html?room=" +
+                roomCode +
+                "&role=host";
+
+        }
+
+
+
+        function completeRoom(roomCode) {
+
+            db.ref(
+                "rooms/" +
+                roomCode
+            )
+                .update({
+
+                    status: "completed"
+
+                });
+
+        }
+
+
+
+        function deleteRoom(roomCode) {
+
+            const confirmDelete =
+                confirm(
+                    "Delete Room " +
+                    roomCode +
+                    " ?"
+                );
+
+            if (!confirmDelete)
+                return;
+
+            db.ref(
+                "rooms/" +
+                roomCode
+            )
+                .remove();
+
+        }
+
+        function loadRooms() {
+
+            db.ref("rooms")
+                .on("value", (snapshot) => {
+
+                    const rooms = snapshot.val();
+
+                    let html = "";
+
+                    if (!rooms) {
+
+                        document
+                            .getElementById("roomList")
+                            .innerHTML =
+                            "No Rooms Available";
+
+                        return;
+                    }
+
+                    Object.entries(rooms)
+                        .forEach(([roomCode, room]) => {
+
+                            const status =
+                                room.status ||
+                                "waiting";
+
+                            html += `
+
+<div class="room-card">
+
+    <h3>
+        ${room.roomCode || roomCode}
+    </h3>
+
+    <br>
+
+    Status :
+
+    <span class="
+        ${status === "completed"
+                                    ? "status-completed"
+                                    : "status-ongoing"
+                                }
+    ">
+        ${status}
+    </span>
+
+    <div class="room-actions">
+
+        <button
+            class="open-btn"
+            onclick="
+            openRoom('${room.roomCode || roomCode}')
+            ">
+
+            Open Room
+
+        </button>
+
+        <button
+            class="complete-btn"
+            onclick="
+            completeRoom('${room.roomCode || roomCode}')
+            ">
+
+            Mark Completed
+
+        </button>
+
+        <button
+            class="delete-btn"
+            onclick="
+            deleteRoom('${room.roomCode || roomCode}')
+            ">
+
+            Delete
+
+        </button>
+
+    </div>
+
+</div>
+
+                    `;
+
+                        });
+
+                    document
+                        .getElementById("roomList")
+                        .innerHTML =
+                        html;
+
+                });
+
+        }
+
+        loadRooms();
+
+    </script>
+
+</body>
+
+</html>

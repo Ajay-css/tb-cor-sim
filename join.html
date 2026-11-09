@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Join Room</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+
+            background: #ffffff;
+
+            min-height: 100vh;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 40px;
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 1400px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 80px;
+        }
+
+        .left-panel {
+
+            flex: 1;
+        }
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 12px 18px;
+
+            border-radius: 999px;
+
+            background: #f3f6ff;
+
+            border: 1px solid #dce5ff;
+
+            color: #4f7fff;
+
+            font-weight: 600;
+
+            margin-bottom: 24px;
+        }
+
+        .left-panel h1 {
+
+            font-size: 52px;
+
+            line-height: 1;
+
+            color: #13233E;
+
+            margin-bottom: 24px;
+        }
+
+        .left-panel p {
+
+            max-width: 600px;
+
+            font-size: 18px;
+
+            line-height: 1.8;
+
+            color: #64748B;
+
+            margin-bottom: 30px;
+        }
+
+        .hero-image img {
+
+            max-width: 420px;
+
+            width: 100%;
+        }
+
+        .right-panel {
+
+            flex: 1;
+
+            display: flex;
+
+            justify-content: center;
+        }
+
+        .card {
+
+            width: 100%;
+
+            max-width: 480px;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 28px;
+
+            box-shadow:
+                0 20px 50px rgba(0, 0, 0, .06);
+
+            border:
+                1px solid rgba(0, 0, 0, .05);
+        }
+
+        h2 {
+
+            font-size: 32px;
+
+            margin-bottom: 10px;
+
+            color: #13233E;
+        }
+
+        .subtitle {
+
+            color: #64748B;
+
+            margin-bottom: 30px;
+        }
+
+        input {
+
+            width: 100%;
+
+            padding: 16px;
+
+            margin-bottom: 15px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid #e2e8f0;
+
+            font-size: 16px;
+
+            outline: none;
+
+            transition: .25s ease;
+        }
+
+        input:focus {
+
+            border-color: #4f7fff;
+
+            box-shadow:
+                0 0 0 4px rgba(79,
+                    127,
+                    255,
+                    .10);
+        }
+
+        .join-btn {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 16px;
+
+            background:
+                linear-gradient(135deg,
+                    #4F7FFF,
+                    #8B7BFF);
+
+            color: white;
+
+            font-size: 17px;
+
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: .25s ease;
+
+            box-shadow:
+                0 15px 35px rgba(79,
+                    127,
+                    255,
+                    .25);
+        }
+
+        .join-btn:hover {
+
+            transform:
+                translateY(-2px);
+        }
+
+        @media(max-width:1000px) {
+
+            .container {
+
+                flex-direction: column;
+
+                text-align: center;
+            }
+
+            .left-panel h1 {
+
+                font-size: 56px;
+            }
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left-panel">
+
+            <!-- <div class="badge">
+
+                TechBee Corporate Simulator
+
+            </div> -->
+
+            <h1>
+
+                Join Your Team.
+
+            </h1>
+
+            <p>
+
+                Enter your room, represent your team,
+                and compete through real-world workplace challenges.
+
+            </p>
+
+            <div class="hero-image">
+
+                <img src="assets/images/ava.png" alt="Ava">
+
+            </div>
+
+        </div>
+
+
+
+        <div class="right-panel">
+
+            <div class="card">
+
+                <h2>
+
+                    Join Arena
+
+                </h2>
+
+                <p class="subtitle">
+
+                    Let's get your team into the competition.
+
+                </p>
+
+                <input type="text" id="roomCode" placeholder="Room Code">
+
+                <input type="text" id="teamName" placeholder="Team Name">
+
+                <input type="text" id="playerName" placeholder="Player Name">
+
+                <button class="join-btn" onclick="joinRoom()">
+
+                    Join Room
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+
+    <script>
+
+        function playSound(file) {
+
+            const audio = new Audio(
+                "assets/audio/" + file
+            );
+
+            audio.volume = 0.5;
+
+            audio.play();
+
+        }
+
+        function joinRoom() {
+
+            const roomCode =
+                document
+                    .getElementById("roomCode")
+                    .value
+                    .trim()
+                    .toUpperCase();
+
+            const teamName =
+                document
+                    .getElementById("teamName")
+                    .value
+                    .trim();
+
+            const playerName =
+                document
+                    .getElementById("playerName")
+                    .value
+                    .trim();
+
+            if (
+                !roomCode ||
+                !teamName ||
+                !playerName
+            ) {
+
+                alert(
+                    "Fill all fields"
+                );
+
+                return;
+
+            }
+
+            const teamId =
+                "TEAM_" +
+                Date.now();
+
+            db.ref(
+                "rooms/" +
+                roomCode +
+                "/teams/" +
+                teamId
+            )
+                .set({
+
+                    teamName: teamName,
+
+                    playerName: playerName,
+
+                    score: 0,
+
+                    joinedAt: Date.now()
+
+                })
+                .then(() => {
+
+                    sessionStorage.setItem(
+                        "teamEntryName",
+                        teamName
+                    );
+
+                    playSound(
+                        "ui-click.wav"
+                    );
+
+                    window.location.href =
+                        "lobby.html?room=" +
+                        roomCode +
+                        "&role=player" +
+                        "&team=" +
+                        encodeURIComponent(
+                            teamName
+                        );
+
+                })
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert(
+                        "Unable to join room"
+                    );
+
+                });
+
+        }
+
+    </script>
+
+</body>
+
+</html>

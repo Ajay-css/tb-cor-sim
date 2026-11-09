@@ -1,0 +1,41 @@
+body{
+    margin:0;
+    font-family: Outfit, sans-serif;
+    background:#f8f9ff;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+
+.container{
+    background:white;
+    padding:40px;
+
+    border-radius:20px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.08);
+
+    text-align:center;
+}
+
+button{
+    background:#4f7fff;
+    color:white;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    font-size:18px;
+}
+
+button:hover{
+    opacity:.9;
+}

@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Lobby</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@latest/font/lucide.css">
+</head>
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+
+        background: #ffffff;
+
+        min-height: 100vh;
+
+        padding: 40px;
+    }
+
+    .lobby-container {
+
+        max-width: 1400px;
+
+        margin: auto;
+    }
+
+    /* -------------------------------- */
+    /* HERO                             */
+    /* -------------------------------- */
+
+    .hero-section {
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 80px;
+
+        margin-bottom: 60px;
+    }
+
+    .hero-content {
+
+        flex: 1;
+    }
+
+    .badge {
+
+        display: inline-block;
+
+        padding: 12px 20px;
+
+        border-radius: 999px;
+
+        background: #f3f6ff;
+
+        color: #4F7FFF;
+
+        border: 1px solid #dce5ff;
+
+        font-weight: 600;
+
+        margin-bottom: 25px;
+    }
+
+    .hero-content h1 {
+
+        font-size: 72px;
+
+        line-height: 1;
+
+        color: #13233E;
+
+        margin-bottom: 24px;
+    }
+
+    .hero-content p {
+
+        font-size: 20px;
+
+        line-height: 1.8;
+
+        color: #64748B;
+
+        max-width: 600px;
+
+        margin-bottom: 30px;
+    }
+
+    .hero-image {
+
+        flex: 1;
+
+        display: flex;
+
+        justify-content: center;
+    }
+
+    .hero-image img {
+
+        max-width: 550px;
+
+        width: 100%;
+    }
+
+    /* -------------------------------- */
+    /* STATS                            */
+    /* -------------------------------- */
+
+    .stats {
+
+        display: flex;
+
+        gap: 18px;
+    }
+
+    .stat-card {
+
+        min-width: 220px;
+
+        padding: 22px;
+
+        border-radius: 22px;
+
+        background: #F8FAFF;
+
+        border: 1px solid rgba(79,
+                127,
+                255,
+                .08);
+    }
+
+    .stat-card span {
+
+        color: #64748B;
+
+        display: block;
+
+        margin-bottom: 8px;
+    }
+
+    .stat-card strong {
+
+        font-size: 22px;
+
+        color: #13233E;
+    }
+
+    /* -------------------------------- */
+    /* TEAMS SECTION                    */
+    /* -------------------------------- */
+
+    .teams-section {
+
+        margin-bottom: 40px;
+    }
+
+    .section-header {
+
+        font-size: 34px;
+
+        font-weight: 700;
+
+        color: #13233E;
+
+        margin-bottom: 25px;
+    }
+
+    /* Grid */
+
+    #teamList {
+
+        display: grid;
+
+        grid-template-columns:
+
+            repeat(auto-fit,
+                minmax(250px,
+                    1fr));
+
+        gap: 18px;
+    }
+
+    .team-card {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 15px;
+
+        background: white;
+
+        padding: 20px;
+
+        border-radius: 22px;
+
+        border: 1px solid rgba(79,
+                127,
+                255,
+                .08);
+
+        transition: .25s ease;
+
+        box-shadow:
+            0 10px 25px rgba(0,
+                0,
+                0,
+                .03);
+    }
+
+    .team-card:hover {
+
+        transform:
+            translateY(-3px);
+    }
+
+    .team-avatar {
+
+        width: 48px;
+
+        height: 48px;
+
+        border-radius: 50%;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-weight: 700;
+
+        color: white;
+
+        background:
+            linear-gradient(135deg,
+                #4F7FFF,
+                #8B7BFF);
+    }
+
+    .team-name {
+
+        font-size: 17px;
+
+        font-weight: 600;
+
+        color: #13233E;
+    }
+
+    .team-info {
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 12px;
+
+        flex: 1;
+    }
+
+    .remove-btn {
+
+        width: 38px;
+
+        height: 38px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        cursor: pointer;
+
+        background:
+            rgba(239,
+                68,
+                68,
+                .10);
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        transition: .25s ease;
+    }
+
+    .remove-btn:hover {
+
+        background:
+            rgba(239,
+                68,
+                68,
+                .20);
+
+        transform:
+            scale(1.05);
+    }
+
+    .remove-btn svg {
+
+        width: 18px;
+
+        height: 18px;
+
+        color: #EF4444;
+    }
+
+    /* -------------------------------- */
+    /* START BUTTON                     */
+    /* -------------------------------- */
+
+    .start-btn {
+
+        width: 100%;
+
+        border: none;
+
+        padding: 22px;
+
+        border-radius: 22px;
+
+        background:
+            linear-gradient(135deg,
+                #4F7FFF,
+                #8B7BFF);
+
+        color: white;
+
+        font-size: 20px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        box-shadow:
+            0 20px 40px rgba(79,
+                127,
+                255,
+                .25);
+
+        transition: .3s ease;
+    }
+
+    .start-btn:hover {
+
+        transform:
+            translateY(-4px);
+    }
+
+    #teamEntryOverlay {
+
+        position: fixed;
+
+        inset: 0;
+
+        background: #000;
+
+        display: none;
+
+        justify-content: center;
+
+        align-items: center;
+
+        z-index: 999999;
+    }
+
+    .entry-content {
+
+        text-align: center;
+    }
+
+    .entry-title {
+
+        font-family:
+            'Bebas Neue',
+            sans-serif;
+
+        font-size: 110px;
+
+        letter-spacing: 8px;
+
+        color: white;
+
+    }
+
+    .entry-content h1 {
+
+        font-size: 96px;
+
+        font-weight: 900;
+
+        color: white;
+
+        letter-spacing: 6px;
+
+        text-transform: uppercase;
+
+        text-shadow:
+            0 0 20px rgba(79,
+                127,
+                255,
+                .4);
+    }
+
+    .entry-content p {
+
+        margin-top: 18px;
+
+        font-size: 28px;
+
+        color: #8B7BFF;
+
+        letter-spacing: 4px;
+
+        font-weight: 600;
+    }
+
+    .arenaOverlay,
+    #arenaOverlay {
+
+        position: fixed;
+
+        inset: 0;
+
+        background: #000;
+
+        z-index: 999999;
+
+        display: none;
+
+        justify-content: center;
+
+        align-items: center;
+    }
+
+    .arena-content {
+
+        text-align: center;
+    }
+
+    .arena-small {
+
+        color: #8B7BFF;
+
+        letter-spacing: 6px;
+
+        margin-bottom: 20px;
+
+        font-size: 18px;
+    }
+
+    #arenaTeamName {
+
+        font-family: 'Anton', sans-serif;
+
+        font-size: 180px;
+
+        line-height: .9;
+
+        letter-spacing: 8px;
+
+        text-transform: uppercase;
+
+        color: white;
+
+        text-shadow:
+            0 0 10px rgba(255, 255, 255, .6),
+            0 0 40px rgba(79, 127, 255, .8),
+            0 0 100px rgba(139, 123, 255, .5);
+
+    }
+
+    #arenaQuote {
+
+        margin-top: 20px;
+
+        color: #A78BFA;
+
+        font-size: 26px;
+
+        letter-spacing: 4px;
+    }
+
+    .reveal-btn {
+
+        width: 40px;
+
+        height: 40px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        background:
+            rgba(79,
+                127,
+                255,
+                .12);
+
+        cursor: pointer;
+
+        margin-right: 8px;
+    }
+
+    .arena-line {
+
+        width: 500px;
+
+        height: 2px;
+
+        margin: 25px auto;
+
+        background:
+            linear-gradient(90deg,
+
+                transparent,
+
+                #4F7FFF,
+
+                #8B7BFF,
+
+                transparent);
+
+    }
+
+    /* -------------------------------- */
+    /* RESPONSIVE                       */
+    /* -------------------------------- */
+
+    @media(max-width:1000px) {
+
+        .hero-section {
+
+            flex-direction: column;
+
+            text-align: center;
+        }
+
+        .stats {
+
+            justify-content: center;
+        }
+
+        .hero-content h1 {
+
+            font-size: 56px;
+        }
+
+    }
+</style>
+
+<body>
+
+    <div class="lobby-container">
+
+        <div class="hero-section">
+
+            <div class="hero-content">
+
+                <div class="badge">
+
+                    Room Active
+
+                </div>
+
+                <h1>
+
+                    Teams Are
+                    Gathering.
+
+                </h1>
+
+                <p>
+
+                    Prepare your team.
+                    Discuss your strategy.
+                    The challenge begins soon.
+
+                </p>
+
+                <div class="stats">
+
+                    <div class="stat-card">
+
+                        <span>
+                            Room ID
+                        </span>
+
+                        <strong id="roomTitle">
+
+                        </strong>
+
+                    </div>
+
+                    <div class="stat-card">
+
+                        <span>
+                            Teams Ready
+                        </span>
+
+                        <strong id="teamCount">
+
+                            0
+
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="hero-image">
+
+                <img src="assets/images/team-discussion.png" alt="Team Discussion">
+
+            </div>
+
+        </div>
+
+
+
+        <div class="teams-section">
+
+            <div class="section-header">
+
+                Teams Joined
+
+            </div>
+
+            <div id="teamList">
+
+            </div>
+
+        </div>
+
+
+
+        <button id="startBtn" class="start-btn" onclick="startGame()">
+
+            Start The Challenge
+
+        </button>
+
+    </div>
+
+    <div id="teamEntryOverlay">
+
+        <div class="entry-content">
+
+            <h1 id="entryTitle">
+
+                TEAM ROCKERS
+
+            </h1>
+
+            <p>
+
+                HAS ENTERED THE ARENA
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+    <script src="js/scenarios.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <script>
+
+        function playSound(file) {
+
+            const audio = new Audio(
+                "assets/audio/" + file
+            );
+
+            audio.volume = 0.5;
+
+            audio.play();
+
+        }
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const roomCode =
+            params.get("room");
+
+        const role =
+            params.get("role");
+
+        const team =
+            params.get("team");
+
+        document
+            .getElementById(
+                "roomTitle"
+            )
+            .innerText =
+            "Room : " +
+            roomCode;
+
+
+
+        db.ref(
+            "rooms/" +
+            roomCode +
+            "/teams"
+        )
+            .on(
+                "value",
+                (snapshot) => {
+
+                    const teams =
+                        snapshot.val();
+
+                    let html = "";
+
+                    if (teams) {
+
+                        Object.entries(
+                            teams
+                        )
+                            .forEach(([teamId, team]) => {
+
+                                html += `
+
+<div class="team-card">
+
+    <div class="team-info">
+
+        <div class="team-avatar">
+
+            ${team.teamName
+                                        .charAt(0)
+                                        .toUpperCase()}
+
+        </div>
+
+        <div class="team-name">
+
+            ${team.teamName}
+
+        </div>
+
+    </div>
+
+    ${role === "host"
+
+                                        ?
+
+                                        `
+<button
+class="reveal-btn"
+onclick="showArenaEntry('${team.teamName}')">
+
+▶
+
+</button>
+
+<button
+class="remove-btn"
+onclick="removeTeam('${teamId}')">
+
+✕
+
+</button>
+`
+
+                                        :
+
+                                        ""
+
+                                    }
+
+</div>
+
+`;
+
+                                const count =
+                                    Object.values(
+                                        teams
+                                    ).length;
+
+                                document
+                                    .getElementById(
+                                        "teamCount"
+                                    )
+                                    .innerText =
+                                    count;
+
+                            });
+
+                    }
+
+                    document
+                        .getElementById(
+                            "teamList"
+                        )
+                        .innerHTML =
+                        html;
+
+                }
+            );
+
+
+
+        if (role !== "host") {
+
+            document
+                .getElementById(
+                    "startBtn"
+                )
+                .style.display =
+                "none";
+
+        }
+
+        function removeTeam(teamId) {
+
+            const confirmDelete =
+
+                confirm(
+                    "Remove this team?"
+                );
+
+            if (
+                !confirmDelete
+            )
+                return;
+
+            db.ref(
+
+                "rooms/" +
+                roomCode +
+                "/teams/" +
+                teamId
+
+            )
+                .remove();
+
+        }
+
+        function showArenaEntry(teamName) {
+
+            const quotes = [
+
+                "THE SPOTLIGHT IS YOURS",
+
+                "ONE TEAM. ONE GOAL.",
+
+                "LET THE ARENA DECIDE",
+
+                "MAKE THIS ROUND COUNT",
+
+                "YOUR MOVE STARTS NOW",
+
+                "EVERY DECISION MATTERS",
+
+                "OUTTHINK. OUTWRITE. OUTWIN.",
+
+                "THE JOURNEY TO #1 BEGINS"
+
+            ];
+
+            const quote =
+
+                quotes[
+                Math.floor(
+                    Math.random() *
+                    quotes.length
+                )
+                ];
+
+
+
+            document
+                .getElementById(
+                    "arenaTeamName"
+                )
+                .innerText =
+                teamName;
+
+            document
+                .getElementById(
+                    "arenaQuote"
+                )
+                .innerText =
+                quote;
+
+
+
+            const overlay =
+
+                document
+                    .getElementById(
+                        "arenaOverlay"
+                    );
+
+
+
+            overlay.style.display =
+                "flex";
+
+
+
+            playSound(
+                "woosh.wav"
+            );
+
+            gsap.fromTo(
+
+                "#arenaTeamName",
+
+                {
+
+                    scale: 0.2,
+
+                    opacity: 0,
+
+                    letterSpacing: "40px"
+
+                },
+
+                {
+
+                    scale: 1,
+
+                    opacity: 1,
+
+                    letterSpacing: "4px",
+
+                    duration: 1.2,
+
+                    ease: "expo.out"
+
+                }
+
+            );
+
+
+
+            setTimeout(() => {
+
+                gsap.to(
+
+                    "#arenaOverlay",
+
+                    {
+
+                        opacity: 0,
+
+                        duration: .6,
+
+                        onComplete() {
+
+                            overlay.style.display =
+                                "none";
+
+                            overlay.style.opacity =
+                                "1";
+
+                        }
+
+                    }
+
+                );
+
+            }, 4000);
+
+            setTimeout(() => {
+
+                confetti({
+
+                    particleCount: 180,
+
+                    spread: 120,
+
+                    startVelocity: 45,
+
+                    zIndex: 1000000,
+
+                    origin: {
+                        y: 0.7
+                    }
+
+                });
+
+            }, 800);
+
+        }
+
+        function startGame() {
+
+            db.ref(
+                "rooms/" +
+                roomCode
+            )
+                .update({
+                    gameStarted: true
+                });
+
+        }
+
+        db.ref(
+            "rooms/" +
+            roomCode +
+            "/gameStarted"
+        )
+            .on(
+                "value",
+                (snapshot) => {
+
+                    const started =
+                        snapshot.val();
+
+                    if (started) {
+
+                        window.location.href =
+
+                            "scenario.html?room=" +
+                            roomCode +
+                            "&role=" +
+                            role +
+                            "&team=" +
+                            encodeURIComponent(
+                                team || ""
+                            );
+
+                    }
+
+                });
+
+        function launchEntry(teamName) {
+
+            const overlay =
+
+                document.getElementById(
+                    "teamEntryOverlay"
+                );
+
+            const title =
+
+                document.getElementById(
+                    "entryTitle"
+                );
+
+            title.innerText =
+                teamName;
+
+            overlay.style.display =
+                "flex";
+
+            gsap.fromTo(
+
+                "#arenaTeamName",
+
+                {
+
+                    scale: 0.1,
+
+                    opacity: 0,
+
+                    letterSpacing: "50px"
+
+                },
+
+                {
+
+                    scale: 1,
+
+                    opacity: 1,
+
+                    letterSpacing: "8px",
+
+                    duration: 1.4,
+
+                    ease: "expo.out"
+
+                }
+
+            );
+
+            playSound(
+                "woosh.wav"
+            );
+
+
+
+            gsap.fromTo(
+
+                ".entry-content",
+
+                {
+
+                    scale: 0.7,
+
+                    opacity: 0,
+
+                    filter: "blur(10px)"
+
+                },
+
+                {
+
+                    scale: 1,
+
+                    opacity: 1,
+
+                    filter: "blur(0px)",
+
+                    duration: 1.2,
+
+                    ease: "power4.out"
+
+                }
+
+            );
+
+            gsap.from(
+
+                "#arenaQuote",
+
+                {
+
+                    delay: 1,
+
+                    opacity: 0,
+
+                    y: 50,
+
+                    duration: 1
+
+                }
+
+            );
+
+
+
+            confetti({
+
+                particleCount: 80,
+
+                spread: 70,
+
+                origin: { y: 0.6 }
+
+            });
+
+
+
+            setTimeout(() => {
+
+                gsap.to(
+
+                    "#teamEntryOverlay",
+
+                    {
+
+                        opacity: 0,
+
+                        duration: 0.6,
+
+                        onComplete() {
+
+                            overlay.style.display =
+                                "none";
+
+                            overlay.style.opacity =
+                                "1";
+
+                        }
+
+                    }
+
+                );
+
+            }, 2500);
+
+        }
+
+    </script>
+
+    <div id="arenaOverlay">
+
+        <div class="arena-content">
+
+            <div class="arena-small">
+
+                TECHBEE ARENA
+
+            </div>
+
+            <h1 id="arenaTeamName">
+
+                TEAM NAME
+
+            </h1>
+
+            <p id="arenaQuote">
+
+                READY FOR THE CHALLENGE
+
+            </p>
+
+            <div class="arena-line"></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

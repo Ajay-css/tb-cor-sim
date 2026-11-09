@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Scenario</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="card">
+
+        <!-- PLAYER VIEW -->
+
+        <div class="playerSection" id="playerSection">
+
+            <div class="left-panel">
+
+                <textarea id="response" placeholder="Craft your professional response here..."></textarea>
+
+                <button id="submitBtn" class="submit-btn" onclick="submitResponse()">
+
+                    <span id="submitBtnText">
+
+                        Submit Response
+
+                    </span>
+
+                </button>
+
+            </div>
+
+            <div class="right-panel">
+
+                <div class="speech-wrapper">
+
+                    <div class="speech-bubble">
+
+                        <div class="scenario-topbar">
+
+                            <button class="speak-btn" onclick="speakScenario()">
+
+                                <i data-lucide="volume-2"></i>
+
+                            </button>
+
+                        </div>
+
+                        <p id="scenarioText">
+
+                            Loading...
+
+                        </p>
+
+                    </div>
+
+                    <img id="scenarioCharacter" src="assets/images/ava.png" alt="Character">
+
+                </div>
+
+                <div class="timer-card">
+
+                    ⏳
+
+                    <span id="timerDisplay">
+
+                        90
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- HOST VIEW -->
+
+        <div id="hostSection" style="display:none;">
+
+            <div class="host-layout">
+
+                <!-- HEADER -->
+
+                <div class="host-header">
+
+                    <div class="host-scenario">
+
+                        <div class="scenario-badge">
+
+                            Current Scenario
+
+                        </div>
+
+                        <p id="hostScenario">
+
+                            Loading...
+
+                        </p>
+
+                    </div>
+
+                    <div class="timer-card">
+
+                        ⏳
+
+                        <span id="hostTimer">
+
+                            90
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- MID SECTION -->
+
+                <div class="host-middle">
+
+                    <!-- IMAGE -->
+
+                    <div class="host-image-card">
+
+                        <img src="assets/images/host-panel.png" alt="Host">
+
+                    </div>
+
+
+                    <!-- RESPONSE TRACKER -->
+
+                    <div class="tracker-card">
+
+                        <h3>
+
+                            Response Tracker
+
+                        </h3>
+
+                        <div id="responseCounter" class="counter">
+
+                            0 Responses Received
+
+                        </div>
+
+                        <div id="responseList">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- BUTTONS -->
+
+                <div class="host-buttons">
+
+                    <button class="evaluate-btn" onclick="evaluateResponses()">
+
+                        Evaluate Responses
+
+                    </button>
+
+                    <button class="next-btn" onclick="nextScenario()">
+
+                        Next Scenario
+
+                    </button>
+
+                    <button class="end-btn" onclick="endMatch()">
+
+                        End Match
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="js/evaluation-enginev2.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-database-compat.js"></script>
+
+    <script src="js/firebase-config.js"></script>
+
+    <script src="js/scenarios.js"></script>
+
+    <script>
+
+        function playSound(file) {
+
+            const audio = new Audio(
+                "assets/audio/" + file
+            );
+
+            audio.volume = 0.5;
+
+            audio.play();
+
+        }
+
+        let responseSubmitted = false;
+
+        let timerInterval;
+
+        const params =
+            new URLSearchParams(
+                window.location.search
+            );
+
+        const roomCode =
+            params.get("room");
+
+        const role =
+            params.get("role");
+
+        const teamName =
+            params.get("team");
+
+
+
+        // HOST VIEW
+
+        if (role === "host") {
+
+            document
+                .getElementById(
+                    "playerSection"
+                )
+                .style.display =
+                "none";
+
+            document
+                .getElementById(
+                    "hostSection"
+                )
+                .style.display =
+                "block";
+
+        }
+
+        function getCharacter(category) {
+
+            switch (category) {
+
+                case "PROJECT_UPDATE":
+                case "EMAIL_COMMUNICATION":
+                case "CUSTOMER_SUPPORT":
+                case "GENERAL_PROFESSIONALISM":
+
+                    return {
+
+                        image: "assets/images/ava.png",
+
+                        name: "Ava"
+
+                    };
+
+
+
+                case "RESOURCE_ISSUE":
+                case "DEADLINE_PRESSURE":
+                case "DEPLOYMENT":
+                case "TESTING_ISSUES":
+
+                    return {
+
+                        image: "assets/images/arjun.png",
+
+                        name: "Arjun"
+
+                    };
+
+
+
+                case "CLIENT_MEETING":
+                case "ESCALATION":
+                case "REQUIREMENT_CHANGE":
+
+                    return {
+
+                        image: "assets/images/rajesh.png",
+
+                        name: "Rajesh"
+
+                    };
+
+
+
+                case "HR_SCENARIO":
+                case "HYBRID_WORK":
+                case "FUNNY_CORPORATE":
+                case "TEAM_CONFLICT":
+
+                    return {
+
+                        image: "assets/images/ai-mentor.png",
+
+                        name: "Neo"
+
+                    };
+
+
+
+                case "INCIDENT":
+                case "SECURITY":
+                case "DATA_LOSS":
+                case "ADVANCED_CORPORATE":
+                case "MANAGER_PRESSURE":
+
+                    return {
+
+                        image: "assets/images/angry-client.png",
+
+                        name: "Critical Client"
+
+                    };
+
+
+
+                default:
+
+                    return {
+
+                        image: "assets/images/ava.png",
+
+                        name: "Ava"
+
+                    };
+
+            }
+
+        }
+
+        function speakScenario() {
+
+            const text =
+
+                document
+                    .getElementById(
+                        "scenarioText"
+                    )
+                    .innerText;
+
+            const characterImage =
+
+                document
+                    .getElementById(
+                        "scenarioCharacter"
+                    )
+                    .src
+                    .toLowerCase();
+
+            const speech =
+
+                new SpeechSynthesisUtterance(
+                    text
+                );
+
+            const voices =
+                window
+                    .speechSynthesis
+                    .getVoices();
+
+            let selectedVoice = null;
+
+            // Female Voices
+
+            if (
+
+                characterImage.includes(
+                    "ava"
+                ) ||
+
+                characterImage.includes(
+                    "angry-client"
+                )
+
+            ) {
+
+                selectedVoice =
+
+                    voices.find(
+                        voice =>
+
+                            voice.name
+                                .toLowerCase()
+                                .includes(
+                                    "female"
+                                )
+                    )
+
+                    ||
+
+                    voices.find(
+                        voice =>
+
+                            voice.name
+                                .toLowerCase()
+                                .includes(
+                                    "zira"
+                                )
+                    );
+
+            }
+
+            // Male Voices
+
+            else if (
+
+                characterImage.includes(
+                    "arjun"
+                ) ||
+
+                characterImage.includes(
+                    "rajesh"
+                )
+
+            ) {
+
+                selectedVoice =
+
+                    voices.find(
+                        voice =>
+
+                            voice.name
+                                .toLowerCase()
+                                .includes(
+                                    "david"
+                                )
+                    )
+
+                    ||
+
+                    voices.find(
+                        voice =>
+
+                            voice.name
+                                .toLowerCase()
+                                .includes(
+                                    "male"
+                                )
+                    );
+
+            }
+
+            // Neo
+
+            else if (
+
+                characterImage.includes(
+                    "ai-mentor"
+                )
+
+            ) {
+
+                speech.pitch = 0.8;
+
+                speech.rate = 1.0;
+
+            }
+
+            if (selectedVoice) {
+
+                speech.voice =
+                    selectedVoice;
+
+            }
+
+            speech.rate = 1;
+
+            speech.volume = 1;
+
+            window
+                .speechSynthesis
+                .cancel();
+
+            window
+                .speechSynthesis
+                .speak(
+                    speech
+                );
+
+        }
+
+        // QUESTION LISTENER
+
+        db.ref(
+            "rooms/" +
+            roomCode +
+            "/currentQuestion"
+        )
+            .on(
+                "value",
+                (snapshot) => {
+
+                    const question =
+                        snapshot.val() ||
+                        "Loading...";
+                    db.ref(
+                        "rooms/" +
+                        roomCode
+                    )
+                        .once("value")
+                        .then(snapshot => {
+
+                            const room =
+                                snapshot.val();
+
+                            const scenarioIndex =
+                                room.currentScenarioIndex || 0;
+
+                            const currentScenario =
+                                SCENARIOS[
+                                room.currentScenarioIndex
+                                ];
+
+                            const character =
+                                getCharacter(
+                                    currentScenario.category
+                                );
+
+                            document
+                                .getElementById(
+                                    "scenarioCharacter"
+                                )
+                                .src =
+                                character.image;
+
+                        });
+
+
+                    if (role === "host") {
+
+                        document
+                            .getElementById(
+                                "hostScenario"
+                            )
+                            .innerText =
+                            question;
+
+                    }
+                    else {
+
+                        document
+                            .getElementById(
+                                "scenarioText"
+                            )
+                            .innerText =
+                            question;
+
+                        const textarea =
+                            document
+                                .getElementById(
+                                    "response"
+                                );
+
+                        const submitBtn =
+                            document
+                                .getElementById(
+                                    "submitBtn"
+                                );
+
+                        responseSubmitted = false;
+
+                        textarea.value = "";
+
+                        textarea.disabled = false;
+
+                        submitBtn.disabled = false;
+
+                        submitBtn.classList.remove(
+                            "submitted-btn"
+                        );
+
+                        document
+                            .getElementById(
+                                "submitBtnText"
+                            )
+                            .innerText =
+                            "Submit Response";
+
+                    }
+
+                });
+
+
+
+        // HOST RESPONSE LIST
+
+        if (role === "host") {
+
+            db.ref(
+                "rooms/" +
+                roomCode +
+                "/responses"
+            )
+                .on(
+                    "value",
+                    (snapshot) => {
+
+                        const data =
+                            snapshot.val();
+
+                        let count = 0;
+
+                        let html = "";
+
+                        if (data) {
+
+                            Object.values(data)
+                                .forEach(response => {
+
+                                    count++;
+
+                                    html += `
+
+<div class="team-card">
+
+    <strong>
+
+        ${response.teamName}
+
+    </strong>
+
+    <span
+    style="
+    color:#10B981;
+    font-weight:600;
+    ">
+
+        Submitted
+
+    </span>
+
+</div>
+
+`;;
+
+                                });
+
+                        }
+
+                        document
+                            .getElementById(
+                                "responseList"
+                            )
+                            .innerHTML =
+                            html;
+
+                        document
+                            .getElementById(
+                                "responseCounter"
+                            )
+                            .innerText =
+                            count +
+                            " Responses Received";
+
+                    });
+
+        }
+
+
+
+        // HOST TIMER
+
+        function startTimer() {
+
+            if (role !== "host")
+                return;
+
+            clearInterval(
+                timerInterval
+            );
+
+            let timeLeft = 90;
+
+            db.ref(
+                "rooms/" +
+                roomCode +
+                "/timer"
+            )
+                .set(timeLeft);
+
+            timerInterval =
+                setInterval(() => {
+
+                    timeLeft--;
+
+                    db.ref(
+                        "rooms/" +
+                        roomCode +
+                        "/timer"
+                    )
+                        .set(timeLeft);
+
+                    if (timeLeft <= 0) {
+
+                        clearInterval(
+                            timerInterval
+                        );
+
+                    }
+
+                }, 1000);
+
+        }
+
+
+
+        // TIMER LISTENER
+
+        db.ref(
+            "rooms/" +
+            roomCode +
+            "/timer"
+        )
+            .on(
+                "value",
+                (snapshot) => {
+
+                    const timer =
+                        snapshot.val();
+
+                    if (timer == null)
+                        return;
+
+
+                    const playerTimer =
+                        document.getElementById(
+                            "timerDisplay"
+                        );
+
+                    const hostTimer =
+                        document.getElementById(
+                            "hostTimer"
+                        );
+
+                    if (playerTimer) {
+
+                        playerTimer.innerText =
+                            "⏰ " +
+                            timer;
+
+                    }
+
+                    if (hostTimer) {
+
+                        hostTimer.innerText =
+                            "⏰ " +
+                            timer;
+
+                    }
+
+
+
+                    // AUTO SUBMIT
+
+                    if (
+                        timer <= 0 &&
+                        role !== "host"
+                    ) {
+
+                        const responseBox =
+                            document.getElementById(
+                                "response"
+                            );
+
+                        const submitBtn =
+                            document.getElementById(
+                                "submitBtn"
+                            );
+
+                        if (!responseSubmitted) {
+
+                            responseSubmitted = true;
+
+                            const response =
+                                responseBox.value.trim();
+
+                            db.ref(
+                                "rooms/" +
+                                roomCode +
+                                "/responses/" +
+                                teamName
+                            )
+                                .set({
+
+                                    teamName:
+                                        teamName,
+
+                                    response:
+                                        response ||
+                                        "[No Response Submitted]",
+
+                                    submittedAt:
+                                        Date.now(),
+
+                                    autoSubmitted:
+                                        true
+
+                                });
+
+                        }
+
+                        responseBox.disabled =
+                            true;
+
+                        submitBtn.disabled =
+                            true;
+
+                    }
+
+                });
+
+
+
+        // MANUAL SUBMIT
+
+        function submitResponse() {
+
+            const response =
+
+                document
+                    .getElementById(
+                        "response"
+                    )
+                    .value
+                    .trim();
+
+            if (!response) {
+
+                alert(
+                    "Enter Response"
+                );
+
+                return;
+
+            }
+
+            responseSubmitted = true;
+
+            db.ref(
+
+                "rooms/" +
+                roomCode +
+                "/responses/" +
+                teamName
+
+            )
+                .set({
+
+                    teamName:
+                        teamName,
+
+                    response:
+                        response,
+
+                    submittedAt:
+                        Date.now(),
+
+                    autoSubmitted:
+                        false
+
+                })
+                .then(() => {
+
+                    playSound(
+                        "submit-chime.wav"
+                    );
+
+                    // alert(
+                    //     "Response Submitted ✅"
+                    // );
+
+                    document
+                        .getElementById(
+                            "submitBtn"
+                        )
+                        .classList
+                        .add(
+                            "submitted-btn"
+                        );
+
+                    document
+                        .getElementById(
+                            "submitBtnText"
+                        )
+                        .innerHTML =
+
+                        `
+
+Submitted
+`;
+
+                    lucide.createIcons();
+
+                    document
+                        .getElementById(
+                            "response"
+                        )
+                        .disabled =
+                        true;
+
+                    document
+                        .getElementById(
+                            "submitBtn"
+                        )
+                        .disabled =
+                        true;
+
+                });
+
+        }
+
+
+
+        // NEXT SCENARIO
+
+        function nextScenario() {
+
+            window.location.href =
+
+                "leaderboard.html?room=" +
+                roomCode;
+
+        }
+
+        function evaluateResponses() {
+
+            db.ref(
+                "rooms/" +
+                roomCode +
+                "/responses"
+            )
+                .once("value")
+                .then(snapshot => {
+
+                    const responses =
+                        snapshot.val();
+
+                    if (!responses) {
+
+                        alert(
+                            "No Responses Received"
+                        );
+
+                        return;
+                    }
+
+                    const currentScenario =
+
+                        document
+                            .getElementById(
+                                "hostScenario"
+                            )
+                            .innerText;
+
+                    const savePromises = [];
+
+                    Object.values(
+                        responses
+                    )
+                        .forEach(team => {
+
+                            const result =
+
+                                EvaluationEngine
+                                    .evaluate(
+
+                                        team.response,
+
+                                        currentScenario
+
+                                    );
+
+                            console.log(
+
+                                team.teamName,
+
+                                result.score,
+
+                                result.rating
+
+                            );
+
+                            const savePromise =
+
+                                db.ref(
+                                    "rooms/" +
+                                    roomCode +
+                                    "/scores/" +
+                                    team.teamName
+                                )
+
+                                    .once("value")
+
+                                    .then(scoreSnap => {
+
+                                        const existing =
+                                            scoreSnap.val();
+
+                                        const oldScore =
+                                            existing &&
+                                                !isNaN(existing.totalScore)
+                                                ? Number(existing.totalScore) : 0;
+
+                                        return db.ref(
+                                            "rooms/" +
+                                            roomCode +
+                                            "/scores/" +
+                                            team.teamName
+                                        )
+                                            .set({
+
+                                                teamName:
+                                                    team.teamName,
+
+                                                lastRound:
+                                                    result.score,
+
+                                                totalScore:
+                                                    Number(oldScore) +
+                                                    Number(result.score),
+
+                                                rating:
+                                                    result.rating,
+
+                                                feedback:
+                                                    result.feedback,
+
+                                                strengths:
+                                                    result.strengths,
+
+                                                bestResponse:
+                                                    team.response
+
+                                            });
+
+                                    });
+
+                            savePromises.push(
+                                savePromise
+                            );
+
+                        });
+
+
+
+                    Promise.all(
+                        savePromises
+                    )
+                        .then(() => {
+
+                            playSound(
+                                "correct-answer.wav"
+                            );
+
+                            window.location.href =
+
+                                "leaderboard.html?room=" +
+                                roomCode;
+
+                        });
+
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    alert(
+                        "Evaluation Failed"
+                    );
+
+                });
+
+        }
+
+        // END MATCH
+
+        function endMatch() {
+
+            const confirmEnd =
+                confirm(
+                    "End this match?"
+                );
+
+            if (!confirmEnd)
+                return;
+
+
+            db.ref(
+                "rooms/" +
+                roomCode
+            )
+                .update({
+
+                    status:
+                        "completed",
+
+                    gameEnded:
+                        true
+
+                })
+                .then(() => {
+
+                    playSound(
+                        "achievement-bell.wav"
+                    );
+
+                    setTimeout(() => {
+
+                        window.location.href =
+                            "final-results.html?room=" +
+                            roomCode;
+
+                    }, 700);
+
+                })
+        }
+
+
+
+        // GAME END LISTENER
+
+        db.ref(
+            "rooms/" +
+            roomCode +
+            "/gameEnded"
+        )
+            .on(
+                "value",
+                (snapshot) => {
+
+                    const ended =
+                        snapshot.val();
+
+                    if (
+                        ended &&
+                        role !== "host"
+                    ) {
+
+                        alert(
+                            "Match Ended"
+                        );
+
+                        window.location.href =
+                            "index.html";
+
+                    }
+
+                });
+
+
+
+        // INITIAL TIMER START
+
+        if (role === "host") {
+
+            startTimer();
+
+        }
+
+        lucide.createIcons();
+
+    </script>
+
+</body>
+
+</html>
